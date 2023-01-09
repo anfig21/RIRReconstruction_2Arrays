@@ -51,7 +51,7 @@ Data = dataHandling(Data);
 % - Setup
 % - Frequency response
 % - RIR reference line
-setupPlot(Data,false,false,true);
+setupPlot(Data,true,false,true);
 
 %% ------------ DIRECT SOUND FIELD ------------ %%
 % Windowing
@@ -182,7 +182,7 @@ Rec.KRR.H = zeros(Nr,numel(Data.f));
 
 figure
 for ii = 1:Nf
-    p = [Data.SphL.H(Data.f==Rec.KRR.f(ii),:) Data.SphR.H(Data.f==Rec.KRR.f(ii),:)].';
+    p = [Data.SphL.H(Data.f==Rec.KRR.f(ii),:)].';% Data.SphR.H(Data.f==Rec.KRR.f(ii),:)].';
     
     % Spherical Kernel
     K_MM = sinc(k(ii)*d_MM/pi);
@@ -192,7 +192,7 @@ for ii = 1:Nf
 %     K_MM = sin(k(ii)*d_MM)./sqrt(k(ii)*d_MM);
 %     K_MNr = sin(k(ii)*d_MNr)./sqrt(k(ii)*d_MNr);
 %     
-%     % Replace NaN or Inf
+%     Replace NaN or Inf
 %     K_MM(k(ii)*d_MM==0) = 1;
 %     K_MNr(k(ii)*d_MNr==0) = 1;
     

@@ -27,8 +27,8 @@ Data.SphR.p = Data.SphR.p(1:2*Data.Nsamples,:);
 %% SPHERICAL ARRAYS (Inner sphere: 156 Microphones: samples 155-end)
 M = 78;
 [idxL,Data.SphL.fNyq] = nearestNeighboursSph(Data.SphL.pos(155:end,:),M,Data.c);
-[idxR,Data.SphR.fNyq] = nearestNeighboursSph(Data.SphR.pos(155:end,:),M,Data.c);
-
+[idxR,Data.SphR.fNyq] = nearestNeighboursSph(Data.SphR.pos(155:end,:),1,Data.c);
+idxR = [];
 % Left sphere
 Data.SphL.pos = Data.SphL.pos(idxL,:);
 Data.SphL.h = Data.SphL.h(:,idxL);
@@ -43,7 +43,8 @@ Data.SphR.M = size(Data.SphR.pos,1);
 
 %% LOW-PASS FILTER
 % Filter design
-Fc = min([Data.SphL.fNyq Data.SphR.fNyq]);
+% Fc = min([Data.SphL.fNyq Data.SphR.fNyq]);
+Fc = Data.SphL.fNyq;
 lpFilt = designfilt('lowpassfir','PassbandFrequency',Fc, ...
             'StopbandFrequency',Fc*1.3,'PassbandRipple',0.5, ...
             'StopbandAttenuation',65,'DesignMethod','kaiserwin',...
@@ -59,9 +60,9 @@ Data.SphL.p = filtfilt(lpFilt,Data.SphL.p); [Data.SphL.P,~] = fftUniBi(Data.SphL
 Data.SphL.n = filtfilt(lpFilt,Data.SphL.n); [Data.SphL.N,~] = fftUniBi(Data.SphL.n);
 
 % Right sphere
-Data.SphR.h = filtfilt(lpFilt,Data.SphR.h); [Data.SphR.H,~] = fftUniBi(Data.SphR.h);
-Data.SphR.p = filtfilt(lpFilt,Data.SphR.p); [Data.SphR.P,~] = fftUniBi(Data.SphR.p);
-Data.SphR.n = filtfilt(lpFilt,Data.SphR.n); [Data.SphR.N,~] = fftUniBi(Data.SphR.n);
+% Data.SphR.h = filtfilt(lpFilt,Data.SphR.h); [Data.SphR.H,~] = fftUniBi(Data.SphR.h);
+% Data.SphR.p = filtfilt(lpFilt,Data.SphR.p); [Data.SphR.P,~] = fftUniBi(Data.SphR.p);
+% Data.SphR.n = filtfilt(lpFilt,Data.SphR.n); [Data.SphR.N,~] = fftUniBi(Data.SphR.n);
 
 end
 

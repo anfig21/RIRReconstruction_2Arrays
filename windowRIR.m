@@ -31,21 +31,19 @@ Structure.N = floor(Data.Fs*Structure.T);
 Structure.Nsamples = Structure.N(2)-Structure.N(1);
 
 % Windowing - 1/2 Hanning (hann) window on each side
-w = vertcat(zeros(Structure.N(1),Data.SphL.M),...
-    repmat(hHalf1,1,Data.SphL.M),...
-    ones(Structure.Nsamples-2*NHann,Data.SphL.M),...
-    repmat(hHalf2,1,Data.SphL.M),...
-    zeros(Data.Nsamples-Structure.Nsamples-Structure.N(1),Data.SphL.M));
+w = vertcat(zeros(Structure.N(1),1),hHalf1,...
+    ones(Structure.Nsamples-2*NHann,1),hHalf2,...
+    zeros(Data.Nsamples-Structure.Nsamples-Structure.N(1),1));
 
 % Windowing Sphere Left
-Structure.SphL.h = w.*Data.SphL.h;
-Structure.SphL.n = w(:,size(Data.SphL.n,2)).*Data.SphL.n(1:2:end,:);
+Structure.SphL.h = repmat(w,1,Data.SphL.M).*Data.SphL.h;
+Structure.SphL.n = repmat(w,1,size(Data.SphL.n,2)).*Data.SphL.n(1:2:end,:);
 [Structure.SphL.H,~] = fftUniBi(Structure.SphL.h);
 [Structure.SphL.N,~] = fftUniBi(Structure.SphL.n);
 
 % Windowing Sphere Right
-Structure.SphR.h = w.*Data.SphR.h;
-Structure.SphR.n = w(:,size(Data.SphR.n,2)).*Data.SphR.n(1:2:end,:);
+Structure.SphR.h = repmat(w,1,Data.SphR.M).*Data.SphR.h;
+Structure.SphR.n = repmat(w,1,size(Data.SphR.n,2)).*Data.SphR.n(1:2:end,:);
 [Structure.SphR.H,~] = fftUniBi(Structure.SphR.h);
 [Structure.SphR.N,~] = fftUniBi(Structure.SphR.n);
 
